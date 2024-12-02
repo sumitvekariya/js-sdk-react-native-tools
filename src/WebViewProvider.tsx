@@ -9,7 +9,7 @@ export const WebViewContext = createContext<{
 }>({witnessCalculationWebView: () => ({})});
 
 export const WebViewWrapperProvider = (props: any) => {
-  const webViewRef = useRef(null);
+  const webViewRef = useRef<WebView>(null);
   let resolveMethod: any;
   const eventHandler = (event: {nativeEvent: {data: string}}) => {
     const data = JSON.parse(event.nativeEvent.data);
@@ -60,6 +60,17 @@ export const WebViewWrapperProvider = (props: any) => {
     `,
           }}
           injectedJavaScriptBeforeContentLoaded={witnessStr}
+          onNavigationStateChange={(event) => {
+            webViewRef.current?.injectJavaScript(witnessStr);
+          }}
+          onLoad={(event) => {
+            webViewRef.current?.injectJavaScript(witnessStr);
+          }}
+          javaScriptCanOpenWindowsAutomatically={true}
+          injectedJavaScript={witnessStr}
+          javaScriptEnabled={true}
+          webviewDebuggingEnabled={true}
+          domStorageEnabled={true}
           onMessage={event => {
             eventHandler(event);
           }}

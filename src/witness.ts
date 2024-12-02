@@ -355,9 +355,13 @@ function arrayBufferToBase64( buffer ) {
     }
     return window.btoa( binary );
 }
-window.addEventListener('message', async (message) => {
+window.ReactNativeWebView.postMessage(JSON.stringify({event: 'Hello', data: 'Hello'}));
+
+
+document.addEventListener('message', async (message) => {
   const data = JSON.parse(message.data);
-<!--  alert(data.event);-->
+  window.ReactNativeWebView.postMessage(JSON.stringify({event: '123', data: '123'}));
+  <!--  alert(data.event);-->
   if (data.event === '@test') {
   window.ReactNativeWebView.postMessage(JSON.stringify({event: '@test_result', data: 'fffddd'}));
   return;
